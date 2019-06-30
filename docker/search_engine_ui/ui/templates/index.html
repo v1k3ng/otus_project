@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Best search engine ever</title>
+        <style type="text/css">
+        body, html {
+            height: 100%;
+        }
+        input { 
+            font-size: 24px;
+        }
+        input[type=submit] {
+            font-size: 5em;
+        }
+        .search{
+            padding: 50px 0px 0px 20px;
+        }
+        .results {
+            padding: 0px 0px 0px 20px;
+        }
+        .footer {
+            padding: 50px 0px 0px 0px;
+            vertical-align: bottom;
+        }
+        </style>
+    </head>
+    <body>
+        <div align=left class="search">
+            <form action="/" method="get" style="vertical-align: bottom">
+                <input type="text" name="query" size="80" value="{{request.args.get('query', '')}}">
+                <input type="submit">
+            </form>
+        </div>
+        {% if result %}
+        <div class="results">
+        {% for url in result %}
+            <br>Score {{url[0]}}: <a href="{{url[1]}}">{{url[1]}}</a>
+        {% endfor %}
+        </div>
+        {% elif request.args.get('query', '') %}
+            <h1>Nothing found</h1>
+        {% endif %}
+
+
+    <div class="footer" align=right>
+    Webpage generated in {{ "%.5fs" % gen_time }}
+    </div>
+    </body>
+</html>

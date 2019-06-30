@@ -1,0 +1,61 @@
+version: '3.3'
+services:
+
+  mongodb:
+    image: mongo:3.2
+    volumes:
+      - post_db:/data/db
+    networks:
+      back_net:
+        aliases:
+          - ui_db
+          - crawler_db
+
+  # rabbitmq:
+  #   image: mongo:3.2
+  #   volumes:
+  #     - post_db:/data/db
+  #   networks:
+  #     back_net:
+  #       aliases:
+  #         - rabbitmq
+
+  crawler_bot:
+    image: ${USER_NAME}/crawler_bot:${SERVVERS}
+    ports:
+      - "8000:8000/tcp"
+    environment:
+      - MONGO=crawler_db
+      - MONGO_PORT=27017
+      - RMQ_HOST=rabbitmq
+      - RMQ_QUEUE=queue1
+      - RMQ_USERNAME=
+      - RMQ_PASSWORD=
+      - CHECK_INTERVAL=
+      - EXCLUDE_URLS=
+    networks:
+      front_net:
+        aliases:
+          - crawler_bot
+
+  crawler_ui:
+    image: ${USER_NAME}/crawler_ui:${SERVVERS}
+    environment:
+      - POST_DATABASE_HOST=post_db
+      - POST_DATABASE=posts
+    ports:
+      - "8000:18000/tcp"
+    networks:
+      back_net:
+        aliases:
+          - crawler_ui
+      front_net:
+        aliases:
+          - crawler_ui
+
+volumes:
+  post_db:
+
+networks:
+  back_net:
+  front_net:
