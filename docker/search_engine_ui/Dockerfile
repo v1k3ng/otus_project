@@ -9,4 +9,5 @@ RUN apk update \
     && pip install --no-cache-dir -r /app/requirements.txt \
     && apk del tmp
 
-ENTRYPOINT ["python3", "post_app.py"]
+# ENTRYPOINT ["python3", "post_app.py"]
+# ENTRYPOINT [ "cd ui && FLASK_APP=ui.py gunicorn ui:app -b 0.0.0.0" ]

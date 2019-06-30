@@ -8,50 +8,55 @@ services:
     networks:
       back_net:
         aliases:
-          - ui_db
-          - crawler_db
+          - mongodb
 
-  # rabbitmq:
-  #   image: mongo:3.2
-  #   volumes:
-  #     - post_db:/data/db
-  #   networks:
-  #     back_net:
-  #       aliases:
-  #         - rabbitmq
-
-  crawler_bot:
-    image: ${USER_NAME}/crawler_bot:${SERVVERS}
-    ports:
-      - "8000:8000/tcp"
+  rabbitmq:
+    image: rabbitmq:3
     environment:
-      - MONGO=crawler_db
-      - MONGO_PORT=27017
-      - RMQ_HOST=rabbitmq
-      - RMQ_QUEUE=queue1
-      - RMQ_USERNAME=
-      - RMQ_PASSWORD=
-      - CHECK_INTERVAL=
-      - EXCLUDE_URLS=
-    networks:
-      front_net:
-        aliases:
-          - crawler_bot
-
-  crawler_ui:
-    image: ${USER_NAME}/crawler_ui:${SERVVERS}
-    environment:
-      - POST_DATABASE_HOST=post_db
-      - POST_DATABASE=posts
-    ports:
-      - "8000:18000/tcp"
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
     networks:
       back_net:
         aliases:
-          - crawler_ui
-      front_net:
-        aliases:
-          - crawler_ui
+          - rabbitmq
+
+  # crawler_bot:
+  #   build: ../docker/search_engine_crawler
+  #   # image: ${USER_NAME}/crawler_bot:${SERVVERS}
+  #   ports:
+  #     - "8000:8000/tcp"
+  #   environment:
+  #     - MONGO=mongodb
+  #     - MONGO_PORT=27017
+  #     - RMQ_HOST=rabbitmq
+  #     - RMQ_QUEUE=queue1
+  #     - RMQ_USERNAME=user
+  #     - RMQ_PASSWORD=password
+  #     - CHECK_INTERVAL=60
+  #     - EXCLUDE_URLS='.*github.com'
+  #   networks:
+  #     front_net:
+  #       aliases:
+  #         - crawler_bot
+  #     back_net:
+  #       aliases:
+  #         - crawler_bot
+
+  # crawler_ui:
+  #   build: ../docker/search_engine_ui
+  #   # image: ${USER_NAME}/crawler_ui:${SERVVERS}
+  #   environment:
+  #     - MONGO=mongodb
+  #     - MONGO_PORT=27017
+  #   ports:
+  #     - "18000:8000/tcp"
+  #   networks:
+  #     back_net:
+  #       aliases:
+  #         - crawler_ui
+  #     front_net:
+  #       aliases:
+  #         - crawler_ui
 
 volumes:
   post_db:
