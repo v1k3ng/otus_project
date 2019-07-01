@@ -2,7 +2,7 @@
 
 # test crawler-bot
 docker run -d --rm --name bot-test alpine:3.7 ash
-docker exec -it bot-test \
+docker exec bot-test \
     "apk add --update --no-cache gcc musl-dev python3 python3-dev \
     && pip3 install --upgrade pip \
     && cd /app \
