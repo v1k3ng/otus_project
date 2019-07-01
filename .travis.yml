@@ -21,9 +21,9 @@ python:
 #   - coverage report --include ui/ui.py
 install:
   - cd docker/search_engine_crawler
-  - sudo /usr/bin/pip3 install -r requirements.txt -r requirements-test.txt
+  - sudo pip3 install -r requirements.txt -r requirements-test.txt
   - cd ../search_engine_ui
-  - sudo /usr/bin/pip3 install -r requirements.txt -r requirements-test.txt
+  - sudo pip3 install -r requirements.txt -r requirements-test.txt
 script:
   - cd ../search_engine_ui
   - sudo /usr/bin/python3 -m unittest discover -s tests/
