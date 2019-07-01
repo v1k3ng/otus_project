@@ -20,27 +20,31 @@ services:
         aliases:
           - rabbitmq
 
-  # crawler_bot:
-  #   build: ../docker/search_engine_crawler
-  #   # image: ${USER_NAME}/crawler_bot:${SERVVERS}
-  #   ports:
-  #     - "8000:8000/tcp"
-  #   environment:
-  #     - MONGO=mongodb
-  #     - MONGO_PORT=27017
-  #     - RMQ_HOST=rabbitmq
-  #     - RMQ_QUEUE=queue1
-  #     - RMQ_USERNAME=user
-  #     - RMQ_PASSWORD=password
-  #     - CHECK_INTERVAL=60
-  #     - EXCLUDE_URLS='.*github.com'
-  #   networks:
-  #     front_net:
-  #       aliases:
-  #         - crawler_bot
-  #     back_net:
-  #       aliases:
-  #         - crawler_bot
+  crawler_bot:
+    # build: ../docker/search_engine_crawler
+    image: ${USER_NAME}/crawler-bot:${SERVVERS}
+    ports:
+      - "8000:8000/tcp"
+    environment:
+      - MONGO=mongodb
+      - MONGO_PORT=27017
+      - RMQ_HOST=rabbitmq
+      - RMQ_QUEUE=queue1
+      - RMQ_USERNAME=user
+      - RMQ_PASSWORD=password
+      - CHECK_INTERVAL=60
+      - EXCLUDE_URLS='.*github.com'
+    command: /usr/bin/python3 -u crawler/crawler.py https://vitkhab.github.io/search_engine_test_site/
+    depends_on: 
+      - mongodb
+      - rabbitmq
+    networks:
+      front_net:
+        aliases:
+          - crawler_bot
+      back_net:
+        aliases:
+          - crawler_bot
 
   # crawler_ui:
   #   build: ../docker/search_engine_ui
