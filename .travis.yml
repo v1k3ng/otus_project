@@ -3,6 +3,12 @@ dist: trusty
 sudo: required
 language: bash
 before_install:
-    - echo "Test is OK"
+  - echo "====================================="
+  - pwd
+  - echo "====================================="
+  - ls -la
+  - echo "====================================="
+  - echo "Test is OK"
+  - echo "====================================="
 # - curl https://raw.githubusercontent.com/v1k3ng/otus_project/test/travis.sh | bash
 # - curl https://raw.githubusercontent.com/express42/otus-homeworks/2019-02/run.sh | bash
