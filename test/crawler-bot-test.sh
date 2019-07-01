@@ -7,8 +7,9 @@ docker run -d --rm --name bot-test \
     --cap-add=NET_ADMIN \
     --privileged \
     --device /dev/net/tun \
-    alpine:3.7
+    mad72/bot-tests:latest
 docker images
+sleep 30
 docker container ls -a
 docker exec bot-test \
     "apk add --update --no-cache gcc musl-dev python3 python3-dev \
