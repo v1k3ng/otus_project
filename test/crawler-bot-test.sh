@@ -10,7 +10,7 @@ docker run -d --rm --name bot-test \
     --device /dev/net/tun \
     -v $(pwd):/app \
     mad72/bot-tests:latest \
-    "/bin/pwd && /bin/ls -la"
+    "/bin/ls"
     # "cd /app/otus_project/docker/search_engine_crawler \
     # && pip3 install -r requirements-test.txt \
     # && python3 -m unittest discover -s tests/"
