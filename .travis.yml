@@ -5,9 +5,6 @@ services:
 language: python
 python:
 - '3.6'
-before_install:
-- openssl aes-256-cbc -K $encrypted_1faf83a9c0f5_key -iv $encrypted_1faf83a9c0f5_iv
-  -in credentials-docker-travis.json.enc -out credentials-docker-travis.json -d
 install:
 - cd docker/search_engine_crawler
 - pip3 install -r requirements.txt -r requirements-test.txt
@@ -45,3 +42,6 @@ notifications:
   slack:
     rooms:
       secure: JnSbZuQ8fPU19IlN1ecqul6YmwH63McI4EkvUUncyf3bkJoLW46HgE6JrdiVWUT4jBPsagU5ikyXxo+QhmT2NYWVDc8tDiabXWuvge4B7YS7nExCRoJAjeE6505duLhBzfaf2eKNIwQrMqdOZjT5tTh8jbtY/w6/9Njue3xq7cKVXQfxG5pM8qFU/tT+amJnuPIR9hOcNvA2K3rD9VNo+T2ykgRodor2gqDKpHwr4kXXMSDy5fbFegUIULHgHh7GzDbWdT3abg3Nl/RvMQKcUepEyoqZz2YVK/UHstFkj6r+b/q7yxYdCJngU1ci+040DOqGU2ZMyLYQSiOymCKzQCm507qfszxQ5exJm+Xl8jvKGWXRVJvTeNU4d+3NKrjaxP1REb7pN8C9VjavpQ2nfa9fgLo9Qj+xYDC0wd8i9LiFuVMc9wttZjhj6ofJTMTdFQ7wmNJjvxpjPyvNl/UNMyTkGUKhYgkz5u9wJnAOwisYU45tmDO5BRueSe/7OAqad9Ng3m4XUtqaSj16kkVyPvOE7Z6esxXEQLxVEWhC/sZh6Frorv3aEmIhHyxlYpFg1HLL+y6Th4RabwaGqZ1drMTVHKp+1d+HIZu+yj9F7HuU5hxbNFON5cdrhKP5Nc+dXgj6fcq/ZQ8NCiJGqwJKXa5h2XjSAHPVa5qZ8tkzXUI=
+before_install:
+- openssl aes-256-cbc -K $encrypted_52e387fa8e99_key -iv $encrypted_52e387fa8e99_iv
+  -in credentials-docker-travis.json.enc -out credentials-docker-travis.json -d
