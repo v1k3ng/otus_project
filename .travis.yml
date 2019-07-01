@@ -5,6 +5,7 @@ language: bash
 before_install:
   - echo "====================================="
   - pwd
+  - cd docker/search_engine_crawler
   - echo "====================================="
   - ls -la
   - echo "====================================="

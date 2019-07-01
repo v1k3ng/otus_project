@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# test crawler-bot
+
+
+# test crawler-ui
+
 GROUP=2019-02
 BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
 HOMEWORK_RUN=./otus-homeworks/homeworks/$BRANCH/run.sh
