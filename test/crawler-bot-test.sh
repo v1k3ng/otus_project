@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # test crawler-bot
+
 docker run -d --rm --name bot-test \
     -v /var/run/docker.sock:/tmp/docker.sock \
     -e DOCKER_HOST=unix:///tmp/docker.sock \
