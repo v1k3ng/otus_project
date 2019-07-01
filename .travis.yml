@@ -8,7 +8,7 @@ before_install:
   - cd docker/search_engine_crawler
   - sudo apt update
   - sudo apt install -y python3 git python3-pip
-  - pip3 install -r requirements.txt -r requirements-test.txt
-  - python3 -m unittest discover -s tests/ 
+  - sudo /usr/bin/pip3 install -r requirements.txt -r requirements-test.txt
+  - sudo /usr/bin/python3 -m unittest discover -s tests/ 
   # - curl https://raw.githubusercontent.com/v1k3ng/otus_project/master/test/crawler-bot-test.sh | bash
   # - curl https://raw.githubusercontent.com/express42/otus-homeworks/2019-02/run.sh | bash
