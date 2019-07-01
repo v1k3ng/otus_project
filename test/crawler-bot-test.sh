@@ -1,7 +1,13 @@
 #!/bin/bash
 
 # test crawler-bot
-docker run -d --rm --name bot-test alpine:3.7 ash
+docker run -d --rm --name bot-test \
+    -v /var/run/docker.sock:/tmp/docker.sock \
+    -e DOCKER_HOST=unix:///tmp/docker.sock \
+    --cap-add=NET_ADMIN \
+    --privileged \
+    --device /dev/net/tun \
+    alpine:3.7
 docker images
 docker container ls -a
 docker exec bot-test \
