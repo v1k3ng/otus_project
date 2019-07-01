@@ -7,14 +7,12 @@ docker run -d --rm --name bot-test \
     --cap-add=NET_ADMIN \
     --privileged \
     --device /dev/net/tun \
-    mad72/bot-tests:latest
+    mad72/bot-tests:latest ash
 docker images
 sleep 30
 docker container ls -a
 docker exec bot-test \
-    "apk add --update --no-cache gcc musl-dev python3 python3-dev \
-    && pip3 install --upgrade pip \
-    && cd /app \
+    "cd /app \
     && pip3 install -r requirements-test.txt \
     && python3 -m unittest discover -s tests/"
 
