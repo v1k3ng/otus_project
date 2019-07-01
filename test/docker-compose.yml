@@ -20,7 +20,7 @@ services:
         aliases:
           - rabbitmq
 
-  crawler_bot:
+  crawler-bot:
     # build: ../docker/search_engine_crawler
     image: ${USER_NAME}/crawler-bot:${SERVVERS}
     environment:
@@ -39,12 +39,12 @@ services:
     networks:
       front_net:
         aliases:
-          - crawler_bot
+          - crawler-bot
       back_net:
         aliases:
-          - crawler_bot
+          - crawler-bot
 
-  crawler_ui:
+  crawler-ui:
     # build: ../docker/search_engine_ui
     image: ${USER_NAME}/crawler-ui:${SERVVERS}
     environment:
@@ -54,16 +54,16 @@ services:
     depends_on: 
       - mongodb
       - rabbitmq
-      - crawler_bot
+      - crawler-bot
     ports:
       - "8000:8000/tcp"
     networks:
       back_net:
         aliases:
-          - crawler_ui
+          - crawler-ui
       front_net:
         aliases:
-          - crawler_ui
+          - crawler-ui
 
 volumes:
   post_db:
