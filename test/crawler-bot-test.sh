@@ -2,12 +2,12 @@
 
 # test crawler-bot
 
-docker run -d --rm --name bot-test \
+docker run -t --rm --name bot-test \
     -v /var/run/docker.sock:/tmp/docker.sock \
     -e DOCKER_HOST=unix:///tmp/docker.sock \
     --cap-add=NET_ADMIN \
     --privileged \
-    --device /dev/net/tun \
+    --device /dev /net/tun \
     -v $(pwd):/app \
     mad72/bot-tests:latest \
     "/bin/ls"
