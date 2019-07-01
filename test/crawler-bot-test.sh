@@ -10,10 +10,9 @@ docker run -t --rm --name bot-test \
     --device /dev /net/tun \
     -v $(pwd):/app \
     mad72/bot-tests:latest \
-    "/bin/ls"
-    # "cd /app/otus_project/docker/search_engine_crawler \
-    # && pip3 install -r requirements-test.txt \
-    # && python3 -m unittest discover -s tests/"
+    "cd /app/otus_project/docker/search_engine_crawler \
+    ;; pip3 install -r requirements-test.txt \
+    ;; python3 -m unittest discover -s tests/"
 # docker images
 # sleep 30
 # docker container ls -a
