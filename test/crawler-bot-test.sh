@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # test crawler-bot
-docker run -it --rm --name bot-test alpine:3.7
+docker run -d --rm --name bot-test alpine:3.7 ash
 docker exec -it bot-test \
     "apk add --update --no-cache gcc musl-dev python3 python3-dev \
     && pip3 install --upgrade pip \
     && cd /app \
     && pip3 install -r requirements-test.txt \
-    && python -m unittest discover -s tests/"
+    && python3 -m unittest discover -s tests/"
 
 
 # GROUP=2019-02
