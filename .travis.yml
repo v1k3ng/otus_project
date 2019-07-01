@@ -1,30 +1,44 @@
 dist: trusty
 sudo: required
 services:
-  - docker
+- docker
 language: python
 python:
-  - '3.6'
+- '3.6'
+before_install:
+- openssl aes-256-cbc -K $encrypted_52e387fa8e99_key -iv $encrypted_52e387fa8e99_iv
+  -in credentials-docker.json.enc -out credentials-docker.json -d
 install:
-  - cd docker/search_engine_crawler
-  - pip3 install -r requirements.txt -r requirements-test.txt
-  - cd ../search_engine_ui
-  - pip3 install -r requirements.txt -r requirements-test.txt
+- cd docker/search_engine_crawler
+- pip3 install -r requirements.txt -r requirements-test.txt
+- cd ../search_engine_ui
+- pip3 install -r requirements.txt -r requirements-test.txt
 script:
-  - python3 -m unittest discover -s tests/
-  - coverage run -m unittest discover -s tests/
-  - coverage report --include ui/ui.py
-  - cd ../search_engine_crawler
-  - python3 -m unittest discover -s tests/
-  - coverage run -m unittest discover -s tests/
-  - coverage report --include crawler/crawler.py
+- python3 -m unittest discover -s tests/
+- coverage run -m unittest discover -s tests/
+- coverage report --include ui/ui.py
+- cd ../search_engine_crawler
+- python3 -m unittest discover -s tests/
+- coverage run -m unittest discover -s tests/
+- coverage report --include crawler/crawler.py
 after_success:
-  - cd ../
-  - docker login -u $docker_user -p $docker_password
-  - docker build -t $docker_user/crawler-bot:latest search_engine_crawler
-  - docker build -t $docker_user/crawler-ui:latest search_engine_ui
-  - docker push $docker_user/crawler-bot:latest
-  - docker push $docker_user/crawler-ui:latest
+- cd ../
+- docker login -u $docker_user -p $docker_password
+- docker build -t $docker_user/crawler-bot:latest search_engine_crawler
+- docker build -t $docker_user/crawler-ui:latest search_engine_ui
+- docker push $docker_user/crawler-bot:latest
+- docker push $docker_user/crawler-ui:latest
+- cd ..
+# install kubectl
+- curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+- chmod +x ./kubectl
+- sudo mv ./kubectl /usr/local/bin/kubectl
+- kubectl version
+# install gcloud
+- echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+- curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+- sudo apt-get update && sudo apt-get install google-cloud-sdk
+- gcloud auth activate-service-account --key-file client-secret.json
 notifications:
   slack:
     rooms:

@@ -102,3 +102,26 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# terraform
+*.tfstate
+*.tfstate.lock.info
+*.tfstate.*.backup
+*.tfstate.backup
+*.tfvars
+.terraform/
+
+# ansible
+*.retry
+inventory.gcp.yml
+
+# packer
+variables.json
+
+# docker-compose
+.env
+
+# python specific
+*.pyc
+
+build_info.txt
