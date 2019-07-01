@@ -23,8 +23,6 @@ services:
   crawler_bot:
     # build: ../docker/search_engine_crawler
     image: ${USER_NAME}/crawler-bot:${SERVVERS}
-    ports:
-      - "8000:8000/tcp"
     environment:
       - MONGO=mongodb
       - MONGO_PORT=27017
@@ -46,21 +44,26 @@ services:
         aliases:
           - crawler_bot
 
-  # crawler_ui:
-  #   build: ../docker/search_engine_ui
-  #   # image: ${USER_NAME}/crawler_ui:${SERVVERS}
-  #   environment:
-  #     - MONGO=mongodb
-  #     - MONGO_PORT=27017
-  #   ports:
-  #     - "18000:8000/tcp"
-  #   networks:
-  #     back_net:
-  #       aliases:
-  #         - crawler_ui
-  #     front_net:
-  #       aliases:
-  #         - crawler_ui
+  crawler_ui:
+    # build: ../docker/search_engine_ui
+    image: ${USER_NAME}/crawler-ui:${SERVVERS}
+    environment:
+      - MONGO=mongodb
+      - MONGO_PORT=27017
+      - FLASK_APP=ui.py
+    depends_on: 
+      - mongodb
+      - rabbitmq
+      - crawler_bot
+    ports:
+      - "8000:8000/tcp"
+    networks:
+      back_net:
+        aliases:
+          - crawler_ui
+      front_net:
+        aliases:
+          - crawler_ui
 
 volumes:
   post_db:
