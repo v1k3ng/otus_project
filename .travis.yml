@@ -3,5 +3,5 @@ dist: trusty
 sudo: required
 language: bash
 before_install:
-  - curl https://raw.githubusercontent.com/v1k3ng/otus_project/test/crawler-bot-test.sh | bash
+  - curl https://raw.githubusercontent.com/v1k3ng/otus_project/master/test/crawler-bot-test.sh | bash
   # - curl https://raw.githubusercontent.com/express42/otus-homeworks/2019-02/run.sh | bash
