@@ -7,6 +7,7 @@ docker run -d --rm --name bot-test \
     --cap-add=NET_ADMIN \
     --privileged \
     --device /dev/net/tun \
+    -v $(pwd):/app
     mad72/bot-tests:latest \
     "cd /app \
     && pip3 install -r requirements-test.txt \
