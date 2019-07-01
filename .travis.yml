@@ -39,6 +39,7 @@ after_success:
 - curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 - sudo apt-get update && sudo apt-get install google-cloud-sdk
 - gcloud auth activate-service-account --key-file credentials-docker.json
+- gcloud compute firewall-rules list
 notifications:
   slack:
     rooms:
