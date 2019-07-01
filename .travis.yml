@@ -19,11 +19,9 @@ script:
   - coverage run -m unittest discover -s tests/
   - coverage report --include crawler/crawler.py
 after_success:
-  - pwd
-  - ls -l
+  - cd ../
   - docker login -u $docker_user -p $docker_password
-  - docker build -t $docker_user/crawler-bot:latest .
-  - cd ../search_engine_ui
+  - docker build -t $docker_user/crawler-bot:latest search_engine_crawler
   - docker build -t $docker_user/crawler-ui:latest search_engine_ui
   - docker push $docker_user/crawler-bot:latest
   - docker push $docker_user/crawler-ui:latest
