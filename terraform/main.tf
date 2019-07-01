@@ -30,11 +30,6 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   node_config {
     preemptible  = true
     machine_type = "${var.machine_type}"
-
-    // metadata {
-    //   disable-legacy-endpoints = "true"
-    // }
-
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
