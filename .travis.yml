@@ -39,7 +39,7 @@ after_success:
   /usr/share/keyrings/cloud.google.gpg add -
 - sudo apt-get update && sudo apt-get install google-cloud-sdk
 - gcloud auth activate-service-account --key-file credentials-docker.json
-- gcloud container clusters get-credentials k8s-1 --zone=europe-west1-b
+- gcloud container clusters get-credentials k8s-1 --zone=$gce_zone
 - kubectl config get-contexts
 notifications:
   slack:
