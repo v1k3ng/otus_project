@@ -36,7 +36,6 @@ after_success:
   /usr/share/keyrings/cloud.google.gpg add -
 - sudo apt-get update && sudo apt-get install google-cloud-sdk
 - gcloud auth activate-service-account --key-file credentials-docker-travis.json
-# - gcloud config set account $gcloud_account
 - gcloud compute instances create worker-0 --image-family ubuntu-1804-lts --image-project
   ubuntu-os-cloud --machine-type f1-micro --zone europe-west1-b
 notifications:
