@@ -40,7 +40,7 @@ after_success:
 - sudo apt-get update && sudo apt-get install google-cloud-sdk
 - gcloud auth activate-service-account --key-file credentials-docker.json
 - gcloud container clusters get-credentials k8s-1
-- cat ~/.kube/config
+- kubectl config get-contexts
 notifications:
   slack:
     rooms:
