@@ -19,8 +19,8 @@ push)
     if [[ "$TRAVIS_BRANCH" -eq "master" ]]; then
         # kubectl apply - $PROD -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
         # sleep 30
-        kubectl delete deployments crawler-bot
-        kubectl delete deployments crawler-ui
+        kubectl delete -n $PROD deployments crawler-bot
+        kubectl delete -n $PROD deployments crawler-ui
         kubectl apply -n $PROD -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
         sleep 60
         kubectl get svc -n $PROD
