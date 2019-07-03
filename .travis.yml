@@ -9,6 +9,14 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_52e387fa8e99_key -iv $encrypted_52e387fa8e99_iv
   -in credentials-docker.json.enc -out credentials-docker.json -d
 install:
+- curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+- chmod +x ./kubectl
+- sudo mv ./kubectl /usr/local/bin/kubectl
+- echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt
+  cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+- curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring
+  /usr/share/keyrings/cloud.google.gpg add -
+- sudo apt-get update && sudo apt-get install google-cloud-sdk
 - cd docker/search_engine_crawler
 - pip3 install -r requirements.txt -r requirements-test.txt
 - cd ../search_engine_ui
@@ -28,20 +36,14 @@ script:
 - docker push $docker_user/crawler-bot:latest
 - docker push $docker_user/crawler-ui:latest
 - cd ../
-- curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-- chmod +x ./kubectl
-- sudo mv ./kubectl /usr/local/bin/kubectl
-- echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt
-  cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-- curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring
-  /usr/share/keyrings/cloud.google.gpg add -
-- sudo apt-get update && sudo apt-get install google-cloud-sdk
 - gcloud auth activate-service-account --key-file credentials-docker.json
 - gcloud container clusters get-credentials k8s-1 --zone=$gce_zone --project=$gce_project
 - kubectl config get-contexts
 - cd deploy_app/
 - kubectl apply -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
 - sleep 30
+- kubectl delete deployments crawler-bot
+- kubectl delete deployments crawler-ui
 - kubectl apply -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
 - sleep 60
 - kubectl get svc
