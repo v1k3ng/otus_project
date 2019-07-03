@@ -28,7 +28,8 @@ after_success:
 - docker build -t $docker_user/crawler-ui:latest search_engine_ui
 - docker push $docker_user/crawler-bot:latest
 - docker push $docker_user/crawler-ui:latest
-- cd ..
+before_deploy:
+- cd ../
 - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 - chmod +x ./kubectl
 - sudo mv ./kubectl /usr/local/bin/kubectl
@@ -41,6 +42,13 @@ after_success:
 - gcloud auth activate-service-account --key-file credentials-docker.json
 - gcloud container clusters get-credentials k8s-1 --zone=$gce_zone --project=$gce_project
 - kubectl config get-contexts
+deploy:
+- cd ../deploy_app
+- kubectl apply -n prod -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
+- sleep 30
+- kubectl apply -n prod -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
+- sleep 60
+- kubectl get svc -n prod
 notifications:
   slack:
     rooms:
