@@ -10,7 +10,7 @@
 # TRAVIS_PULL_REQUEST_BRANCH:
 #     if the current job is a pull request, the name of the branch from which the PR originated.
 #     if the current job is a push build, this variable is empty ("").
-
+set -x
 PROD=prod
 
 cd deploy_app/
