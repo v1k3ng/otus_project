@@ -38,6 +38,16 @@ deploy_namespace()
     kubectl apply -f deploy_app/namespace-prod.yml
 }
 
+deploy_rabbit_mongo()
+{
+    echo -e "\nDeploing PROD namespace\n-----------------------"
+    cd $SCRIPT_PATH
+    kubectl apply -n prod -f deploy_app/deployment-mongodb.yml \
+        -f deploy_app/deployment-rabbitmq.yml \
+        -f deploy_app/service-mongodb.yml \
+        -f deploy_app/service-rabbitmq.yml
+}
+
 deploy_helm()
 {
     echo -e "\nDeploing HELM\n-------------"
@@ -54,6 +64,7 @@ create
 remove_kube_konfig
 get_cred_for_cluster
 deploy_namespace
+deploy_rabbit_mongo
 deploy_helm
 ;;
 
@@ -63,6 +74,7 @@ install
 remove_kube_konfig
 get_cred_for_cluster
 deploy_namespace
+deploy_rabbit_mongo
 deploy_helm
 ;;
 

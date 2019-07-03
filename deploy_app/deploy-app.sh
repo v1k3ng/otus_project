@@ -10,18 +10,16 @@
 # TRAVIS_PULL_REQUEST_BRANCH:
 #     if the current job is a pull request, the name of the branch from which the PR originated.
 #     if the current job is a push build, this variable is empty ("").
-
 PROD=prod
 
 cd deploy_app/
 case "$TRAVIS_EVENT_TYPE" in
 push)
-    if [[ "$TRAVIS_BRANCH" -eq "master" ]]
-    then
+    if [[ "$TRAVIS_BRANCH" == "master" ]]; then
         # kubectl apply - $PROD -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
         # sleep 30
-        kubectl delete deployments crawler-bot
-        kubectl delete deployments crawler-ui
+        kubectl delete -n $PROD deployments crawler-bot
+        kubectl delete -n $PROD deployments crawler-ui
         kubectl apply -n $PROD -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
         sleep 60
         kubectl get svc -n $PROD

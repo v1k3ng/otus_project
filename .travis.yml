@@ -40,10 +40,10 @@ script:
 - gcloud container clusters get-credentials k8s-1 --zone=$gce_zone --project=$gce_project
 - kubectl config get-contexts
 # deploy app
-# - echo $TRAVIS_BRANCH
-# - echo $TRAVIS_EVENT_TYPE
-# - echo $TRAVIS_PULL_REQUEST
-# - echo $TRAVIS_PULL_REQUEST_BRANCH
+- echo $TRAVIS_BRANCH
+- echo $TRAVIS_EVENT_TYPE
+- echo $TRAVIS_PULL_REQUEST
+- echo $TRAVIS_PULL_REQUEST_BRANCH
 
 - bash deploy_app/deploy-app.sh
 # - cd deploy_app/
