@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: ui
   labels:
-    app: crawler-bot
+    app: crawler
     component: ui
 spec:
   type: LoadBalancer
