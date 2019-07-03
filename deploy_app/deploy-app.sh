@@ -16,7 +16,7 @@ PROD=prod
 cd deploy_app/
 case "$TRAVIS_EVENT_TYPE" in
 push)
-    if [ "$TRAVIS_BRANCH" -eq "master" ]
+    if [[ "$TRAVIS_BRANCH" -eq "master" ]]
     then
         # kubectl apply - $PROD -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
         # sleep 30
@@ -37,7 +37,6 @@ push)
     fi
 ;;
 pull_request)
-    kubectl delete all -n $TRAVIS_PULL_REQUEST_BRANCH
     kubectl delete namespace $TRAVIS_PULL_REQUEST_BRANCH
     kubectl delete -n $PROD deployments crawler-bot
     kubectl delete -n $PROD deployments crawler-ui
