@@ -12,5 +12,5 @@ spec:
       protocol: TCP
       targetPort: 8000
   selector:
-    app: crawler-bot
+    app: crawler
     component: ui

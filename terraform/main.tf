@@ -13,6 +13,12 @@ resource "google_container_cluster" "primary" {
   zone     = "${var.zone}"
   remove_default_node_pool = true
   initial_node_count = 1
+  # legacy authorization
+  // enable_legacy_abac = true
+  # legacy Stackdriver Logging
+  logging_service = "none"
+  # legacy Stackdriver Monitoring
+  monitoring_service = "none"
   addons_config {
     kubernetes_dashboard {
         disabled = "false"
