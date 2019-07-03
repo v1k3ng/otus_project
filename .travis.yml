@@ -41,7 +41,7 @@ after_success:
 - gcloud auth activate-service-account --key-file credentials-docker.json
 - gcloud container clusters get-credentials k8s-1 --zone=$gce_zone --project=$gce_project
 - kubectl config get-contexts
-- cd ../deploy_app
+- cd deploy_app/
 - kubectl apply -n prod -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
 - sleep 30
 - kubectl apply -n prod -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
