@@ -35,11 +35,19 @@ push)
     fi
 ;;
 pull_request)
-    kubectl delete namespace $TRAVIS_PULL_REQUEST_BRANCH
-    kubectl delete -n $PROD deployments crawler-bot
-    kubectl delete -n $PROD deployments crawler-ui
-    kubectl apply -n $PROD -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
+    # kubectl delete namespace $TRAVIS_PULL_REQUEST_BRANCH
+    # kubectl delete -n $PROD deployments crawler-bot
+    # kubectl delete -n $PROD deployments crawler-ui
+    # kubectl apply -n $PROD -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
+    # sleep 60
+    # kubectl get svc -n $PROD
+    kubectl create namespace $TRAVIS_PULL_REQUEST_BRANCH
+    kubectl apply -n $TRAVIS_PULL_REQUEST_BRANCH -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
+    sleep 30
+    kubectl delete -n $TRAVIS_PULL_REQUEST_BRANCH deployments crawler-bot
+    kubectl delete -n $TRAVIS_PULL_REQUEST_BRANCH deployments crawler-ui
+    kubectl apply -n $TRAVIS_PULL_REQUEST_BRANCH -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
     sleep 60
-    kubectl get svc -n $PROD
+    kubectl get svc -n $TRAVIS_PULL_REQUEST_BRANCH
 ;;
 esac

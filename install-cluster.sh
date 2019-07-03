@@ -70,7 +70,7 @@ deploy_helm
 
 recreate)
 destroy
-install
+create
 remove_kube_konfig
 get_cred_for_cluster
 deploy_namespace
