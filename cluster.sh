@@ -85,13 +85,23 @@ deploy_prometheus()
 deploy_grafana()
 {
     echo -e "\n${CYAN}Deploing GRAFANA${NONE}\n-------------"
-    cd $SCRIPT_PATH
-    kubectl apply \
-        -f k8s/grafana-deployment.yml \
-        # -f k8s/grafana-daemonset-nodeexporter.yml \
-        # -f k8s/grafana-deployment-state-metrics.yml \
-        # -f k8s/grafana-rbac-state-metrics.yml 
+    # cd $SCRIPT_PATH
+    # kubectl apply \
+    #     -f k8s/grafana-deployment.yml \
+    #     -f k8s/grafana-daemonset-nodeexporter.yml \
+    #     -f k8s/grafana-deployment-state-metrics.yml \
+    #     -f k8s/grafana-rbac-state-metrics.yml 
+    helm upgrade --namespace="monitoring" --install grafana stable/grafana --set "adminPassword=admin"
 }
+
+output_values()
+{
+    POD_GRAFANA=`kubectl get pods -n monitoring -l "app=grafana" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
+    POD_PROMETHEUS=`kubectl get pods -n monitoring -l "app=prometheus-server" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
+    echo -e "\n\nkubectl --namespace monitoring port-forward ${POD_GRAFANA} 3000"
+    echo -e "kubectl --namespace monitoring port-forward ${POD_PROMETHEUS} 9090\n\n"
+}
+
 
 
 case "$1" in
@@ -104,6 +114,7 @@ deploy_rabbit_mongo
 deploy_helm
 deploy_prometheus
 deploy_grafana
+output_values
 ;;
 
 recreate)
@@ -115,7 +126,8 @@ deploy_namespaces
 deploy_rabbit_mongo
 deploy_helm
 deploy_prometheus
-# deploy_grafana
+deploy_grafana
+output_values
 ;;
 
 destroy)
