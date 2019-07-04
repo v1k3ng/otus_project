@@ -5,8 +5,6 @@
 #     for builds triggered by a tag, this is the same as the name of the tag (TRAVIS_TAG).
 # TRAVIS_EVENT_TYPE:
 #     Indicates how the build was triggered. One of push, pull_request, api, cron.
-# TRAVIS_PULL_REQUEST:
-#     The pull request number if the current job is a pull request, “false” if it’s not a pull request.
 # TRAVIS_PULL_REQUEST_BRANCH:
 #     if the current job is a pull request, the name of the branch from which the PR originated.
 #     if the current job is a push build, this variable is empty ("").

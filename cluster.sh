@@ -5,18 +5,25 @@ SCRIPT_PATH=`dirname $0`
 cd $SCRIPT_PATH
 SCRIPT_PATH=$PWD
 
-destroy()
+destroy_cluster()
 {
     echo -e "\nDestroing existing cluster\n-------------------------"
     cd $SCRIPT_PATH/terraform/
     terraform destroy --auto-approve=true
 }
 
-create()
+create_cluster()
 {
     echo -e "\nInstalling new cluster k8s-1\n----------------------------"
     cd $SCRIPT_PATH/terraform/
-    terraform apply --auto-approve=true
+    tfstate=`terraform state list`
+    if [[ "$tfstate" != "" ]]
+    then
+        echo "You already have cluster k8s-1"
+        exit 1
+    else
+        terraform apply --auto-approve=true
+    fi
 }
 
 remove_kube_konfig()
@@ -31,11 +38,12 @@ get_cred_for_cluster()
     gcloud container clusters get-credentials k8s-1
 }
 
-deploy_namespace()
+deploy_namespaces()
 {
     echo -e "\nDeploing PROD namespace\n-----------------------"
     cd $SCRIPT_PATH
     kubectl apply -f deploy_app/namespace-prod.yml
+    kubectl apply -f k8s/namespace-monitoring.yml
 }
 
 deploy_rabbit_mongo()
@@ -57,29 +65,41 @@ deploy_helm()
     helm list --all
 }
 
+deploy_prometheus()
+{
+    echo -e "\nDeploing PROMETHEUS\n-------------"
+    cd $SCRIPT_PATH
+    kubectl apply -n monitoring \
+        -f k8s/prometheus-clusterrole.yml \
+        -f k8s/prometheus-config-map.yml \
+        -f k8s/prometheus-deployment.yml
+}
+
 
 case "$1" in
 create)
-create
+create_cluster
 remove_kube_konfig
 get_cred_for_cluster
-deploy_namespace
+deploy_namespaces
 deploy_rabbit_mongo
 deploy_helm
+deploy_prometheus
 ;;
 
 recreate)
-destroy
-create
+destroy_cluster
+create_cluster
 remove_kube_konfig
 get_cred_for_cluster
-deploy_namespace
+deploy_namespaces
 deploy_rabbit_mongo
 deploy_helm
+deploy_prometheus
 ;;
 
 destroy)
-destroy
+destroy_cluster
 ;;
 
 *)
