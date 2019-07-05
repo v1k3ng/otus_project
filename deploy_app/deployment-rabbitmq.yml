@@ -4,19 +4,16 @@ kind: Deployment
 metadata:
   name: rabbitmq
   labels:
-    app: crawler
     component: rabbitmq
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: crawler
       component: rabbitmq
   template:
     metadata:
       name: rabbitmq
       labels:
-        app: crawler
         component: rabbitmq
     spec:
       containers:

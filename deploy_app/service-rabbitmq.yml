@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: rabbitmq
   labels:
-    app: crawler
     component: rabbitmq
 spec:
   type: ClusterIP
@@ -12,5 +11,4 @@ spec:
       protocol: TCP
       targetPort: 5672
   selector:
-    app: crawler
     component: rabbitmq

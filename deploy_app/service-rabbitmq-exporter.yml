@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-exporter
+  labels:
+    app: crawler
+    component: rabbitmq-exporter
+spec:
+  ports:
+  - port: 9419
+    protocol: TCP
+    targetPort: 9419
+  selector:
+    app: crawler
+    component: rabbitmq-exporter

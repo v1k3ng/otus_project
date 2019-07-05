@@ -4,7 +4,6 @@ kind: Service
 metadata:
   name: mongodb
   labels:
-    app: crawler
     component: mongodb
 spec:
   ports:
@@ -12,5 +11,4 @@ spec:
     protocol: TCP
     targetPort: 27017
   selector:
-    app: crawler
     component: mongodb

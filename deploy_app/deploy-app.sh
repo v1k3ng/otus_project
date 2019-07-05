@@ -18,16 +18,30 @@ push)
         # sleep 30
         kubectl delete -n $PROD deployments crawler-bot
         kubectl delete -n $PROD deployments crawler-ui
-        kubectl apply -n $PROD -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
+        kubectl apply -n $PROD -f deployment-bot.yml \
+                                -f deployment-ui.yml \
+                                -f service-bot.yml \
+                                -f service-ui.yml
         sleep 60
         kubectl get svc -n $PROD
     else
         kubectl create namespace $TRAVIS_BRANCH
-        kubectl apply -n $TRAVIS_BRANCH -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
+        kubectl apply -n $TRAVIS_BRANCH -f deployment-mongodb.yml \
+                                        -f deployment-rabbitmq.yml \
+                                        -f service-mongodb.yml \
+                                        -f service-rabbitmq.yml \
+                                        -f deployment-mongodb-exporter.yml \
+                                        -f service-mongodb-exporter.yml \
+                                        -f deployment-rabbitmq-exporter.yml \ 
+                                        -f service-rabbitmq-exporter.yml \
+                                        
         sleep 30
         kubectl delete -n $TRAVIS_BRANCH deployments crawler-bot
         kubectl delete -n $TRAVIS_BRANCH deployments crawler-ui
-        kubectl apply -n $TRAVIS_BRANCH -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
+        kubectl apply -n $TRAVIS_BRANCH -f deployment-bot.yml \
+                                        -f deployment-ui.yml \
+                                        -f service-bot.yml \
+                                        -f service-ui.yml
         sleep 60
         kubectl get svc -n $TRAVIS_BRANCH
     fi
@@ -40,11 +54,21 @@ pull_request)
     # sleep 60
     # kubectl get svc -n $PROD
     kubectl create namespace $TRAVIS_PULL_REQUEST_BRANCH
-    kubectl apply -n $TRAVIS_PULL_REQUEST_BRANCH -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
+    kubectl apply -n $TRAVIS_PULL_REQUEST_BRANCH -f deployment-mongodb.yml \
+                                                -f deployment-rabbitmq.yml \
+                                                -f service-mongodb.yml \
+                                                -f service-rabbitmq.yml \
+                                                -f deployment-mongodb-exporter.yml \
+                                                -f service-mongodb-exporter.yml \
+                                                -f deployment-rabbitmq-exporter.yml \ 
+                                                -f service-rabbitmq-exporter.yml \
     sleep 30
     kubectl delete -n $TRAVIS_PULL_REQUEST_BRANCH deployments crawler-bot
     kubectl delete -n $TRAVIS_PULL_REQUEST_BRANCH deployments crawler-ui
-    kubectl apply -n $TRAVIS_PULL_REQUEST_BRANCH -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
+    kubectl apply -n $TRAVIS_PULL_REQUEST_BRANCH -f deployment-bot.yml \
+                                                -f deployment-ui.yml \
+                                                -f service-bot.yml \
+                                                -f service-ui.yml
     sleep 60
     kubectl get svc -n $TRAVIS_PULL_REQUEST_BRANCH
 ;;

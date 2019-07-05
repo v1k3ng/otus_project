@@ -4,19 +4,16 @@ kind: Deployment
 metadata:
   name: mongodb
   labels:
-    app: crawler
     component: mongodb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: crawler
       component: mongodb
   template:
     metadata:
       name: mongodb
       labels:
-        app: crawler
         component: mongodb
     spec:
       containers:

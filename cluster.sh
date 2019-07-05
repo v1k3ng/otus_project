@@ -59,7 +59,12 @@ deploy_rabbit_mongo()
     kubectl apply -n prod -f deploy_app/deployment-mongodb.yml \
         -f deploy_app/deployment-rabbitmq.yml \
         -f deploy_app/service-mongodb.yml \
-        -f deploy_app/service-rabbitmq.yml
+        -f deploy_app/service-rabbitmq.yml \
+        -f deploy_app/deployment-mongodb-exporter.yml \
+        -f deploy_app/service-mongodb-exporter.yml \
+        -f deploy_app/deployment-rabbitmq-exporter.yml \
+        -f deploy_app/service-rabbitmq-exporter.yml
+
 }
 
 deploy_helm()
