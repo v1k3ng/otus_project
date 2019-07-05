@@ -98,7 +98,8 @@ deploy_grafana()
     #     -f k8s/grafana-rbac-state-metrics.yml 
     # wait for tiller
     sleep 30
-    helm upgrade --namespace="monitoring" --install grafana stable/grafana --set "adminPassword=admin"
+    helm upgrade --namespace="monitoring" grafana grafana/grafana -f grafana/grafana/values.yaml --install --set "adminPassword=admin"
+    # helm upgrade --namespace="monitoring" --install grafana stable/grafana --set "adminPassword=admin"
 }
 
 output_values()
