@@ -32,9 +32,8 @@ push)
                                         -f service-rabbitmq.yml \
                                         -f deployment-mongodb-exporter.yml \
                                         -f service-mongodb-exporter.yml \
-                                        -f deployment-rabbitmq-exporter.yml \ 
-                                        -f service-rabbitmq-exporter.yml \
-                                        
+                                        -f deployment-rabbitmq-exporter.yml \
+                                        -f service-rabbitmq-exporter.yml 
         sleep 30
         kubectl delete -n $TRAVIS_BRANCH deployments crawler-bot
         kubectl delete -n $TRAVIS_BRANCH deployments crawler-ui
