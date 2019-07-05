@@ -44,7 +44,6 @@ script:
 # - echo $TRAVIS_EVENT_TYPE
 # - echo $TRAVIS_PULL_REQUEST
 # - echo $TRAVIS_PULL_REQUEST_BRANCH
-
 - bash deploy_app/deploy-app.sh
 # - cd deploy_app/
 # - kubectl apply -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
