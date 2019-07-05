@@ -24,8 +24,10 @@ spec:
         name: rabbitmq-exporter
         env:
         - name: RABBIT_URL
-          value: http://rabbitmq:15672
+          value: http://rabbitmq:5672
         - name: RABBIT_USER
           value: user
         - name: RABBIT_PASSWORD
           value: password
+        - name: INCLUDE_QUEUES
+          value: queue1

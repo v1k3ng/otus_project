@@ -142,6 +142,8 @@ data:
         #   replacement: $1:$2
         - action: labelmap
           regex: __meta_kubernetes_service_label_(.+)
+        - action: labelmap
+          regex: __meta_kubernetes_pod_label_(.+)
         - source_labels: [__meta_kubernetes_namespace]
           action: replace
           target_label: kubernetes_namespace
