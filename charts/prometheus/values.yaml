@@ -947,14 +947,14 @@ pushgateway:
 ##
 alertmanagerFiles:
   alertmanager.yml:
-    global: {}
-      # slack_api_url: ''
+    global:
+      slack_api_url: ''
 
     receivers:
       - name: default-receiver
-        # slack_configs:
-        #  - channel: '@you'
-        #    send_resolved: true
+        slack_configs:
+         - channel: ''
+           send_resolved: true
 
     route:
       group_wait: 10s

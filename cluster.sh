@@ -100,6 +100,8 @@ deploy_prometheus()
     #     -f k8s/prometheus-service.yml
     helm upgrade --namespace monitoring prometheus charts/prometheus \
             -f charts/prometheus/values.yaml \
+            --set-string alertmanagerFiles."alertmanager\.yml".global.slack_api_url=${SLACKAPIURL} \
+            --set-string alertmanagerFiles."alertmanager\.yml".receivers[0].slack_configs[0].channel=${SLACKCHANNEL} \
             --install --wait
 }
 
@@ -122,39 +124,54 @@ deploy_grafana()
 output_values()
 {
     echo -e "\n${CYAN}Output values${NONE}\n-------------"
-    kubectl get svc -n prod
+    kubectl get svc -n prod ui
     POD_GRAFANA=`kubectl get pods -n monitoring -l "app=grafana" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
-    POD_PROMETHEUS=`kubectl get pods -n monitoring -l "app=prometheus,component=alertmanager" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
+    POD_PROMETHEUS=`kubectl get pods -n monitoring -l "app=prometheus,component=server" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
+    POD_ALERTMANAGER=`kubectl get pods -n monitoring -l "app=prometheus,component=alertmanager" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
     echo -e "\n\nkubectl --namespace monitoring port-forward ${POD_GRAFANA} 3000"
-    echo -e "kubectl --namespace monitoring port-forward ${POD_PROMETHEUS} 9090\n\n"
+    echo -e "kubectl --namespace monitoring port-forward ${POD_PROMETHEUS} 9090"
+    echo -e "kubectl --namespace monitoring port-forward ${POD_ALERTMANAGER} 9093\n\n"
 }
+
 
 case "$1" in
 create)
-    create_cluster
-    remove_kube_konfig
-    get_cred_for_cluster
-    deploy_helm
-    deploy_namespaces
-    deploy_rabbit_mongo
-    deploy_base_app
-    deploy_prometheus
-    deploy_grafana
-    output_values
+    if [[ -v SLACKAPIURL && -v SLACKCHANNEL ]]
+    then
+        create_cluster
+        remove_kube_konfig
+        get_cred_for_cluster
+        deploy_helm
+        deploy_namespaces
+        deploy_rabbit_mongo
+        deploy_base_app
+        deploy_prometheus
+        deploy_grafana
+        output_values
+    else
+        echo -e "\nVariables ${RED}SLACKAPIURL${NONE} and ${RED}SLACKCHANNEL${NONE} not found!\n"
+        exit 1
+    fi
 ;;
 
 recreate)
-    destroy_cluster
-    create_cluster
-    remove_kube_konfig
-    get_cred_for_cluster
-    deploy_helm
-    deploy_namespaces
-    deploy_rabbit_mongo
-    deploy_base_app
-    deploy_prometheus
-    deploy_grafana
-    output_values
+    if [[ -v SLACKAPIURL && -v SLACKCHANNEL ]]
+    then
+        destroy_cluster
+        create_cluster
+        remove_kube_konfig
+        get_cred_for_cluster
+        deploy_helm
+        deploy_namespaces
+        deploy_rabbit_mongo
+        deploy_base_app
+        deploy_prometheus
+        deploy_grafana
+        output_values
+    else
+        echo -e "\nVariables ${RED}SLACKAPIURL${NONE} and ${RED}SLACKCHANNEL${NONE} not found!\n"
+        exit 1
+    fi
 ;;
 
 destroy)

@@ -234,7 +234,8 @@ extraVolumeMounts: []
 
 ## Pass the plugins you want installed as a list.
 ##
-plugins: []
+plugins:
+  - grafana-kubernetes-app
   # - digrich-bubblechart-panel
   # - grafana-clock-panel
 
@@ -274,18 +275,18 @@ notifiers: {}
 ##
 ## `path` must be /var/lib/grafana/dashboards/<provider_name>
 ##
-dashboardProviders: {}
-#  dashboardproviders.yaml:
-#    apiVersion: 1
-#    providers:
-#    - name: 'custom-dashboard'
-#      orgId: 1
-#      folder: 'dashboards'
-#      type: file
-#      disableDeletion: false
-#      editable: true
-#      options:
-#        path: /var/lib/grafana/dashboards/
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'mydashboards'
+      orgId: 1
+      # folder: 'mydashboards'
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/mydashboards
 
 ## Configure grafana dashboard to import
 ## NOTE: To use dashboards you must also enable/configure dashboardProviders
@@ -293,7 +294,12 @@ dashboardProviders: {}
 ##
 ## dashboards per provider, use provider name as key.
 ##
-dashboards: {}
+dashboards:
+  mydashboards:
+    custom-dashboard:
+      file: dashboards/namespace.json
+    cluster:
+      file: dashboards/315.json
   # default:
   #   some-dashboard:
   #     json: |

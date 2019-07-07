@@ -2372,7 +2372,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes cluster monitoring (via Prometheus)",
+  "title": "Kubernetes cluster dashboard",
   "uid": "yLvO7zIWk",
   "version": 4
 }

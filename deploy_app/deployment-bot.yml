@@ -20,7 +20,7 @@ spec:
         component: bot
     spec:
       containers:
-      - image: mad72/crawler-bot1:latest
+      - image: mad72/crawler-bot:latest
         name: bot
         env:
         - name: MONGO
