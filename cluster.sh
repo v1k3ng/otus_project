@@ -50,6 +50,7 @@ deploy_namespaces()
     cd $SCRIPT_PATH
     kubectl apply -f deploy_app/namespace-prod.yml --wait
     kubectl apply -f k8s/namespace-monitoring.yml --wait
+    kubectl apply -f k8s/namespace-logging.yml --wait
 }
 
 deploy_rabbit_mongo()
@@ -119,6 +120,24 @@ deploy_grafana()
         --install \
         --set "adminPassword=admin" \
         --wait
+}
+
+deploy_fluentd()
+{
+    echo -e "\n${CYAN}Deploing FLUENTD${NONE}\n-------------"
+    cd $SCRIPT_PATH
+    helm upgrade --namespace logging fluentd charts/fluentd \
+        -f charts/fluentd/values.yaml \
+        --install --wait 
+}
+
+deploy_elasticsearch()
+{
+    echo -e "\n${CYAN}Deploing ELASTICSEARCH${NONE}\n-------------"
+    cd $SCRIPT_PATH
+    helm upgrade --namespace logging elasticsearch charts/elasticsearch \
+        -f charts/elasticsearch/values.yaml \
+        --install --wait 
 }
 
 output_values()

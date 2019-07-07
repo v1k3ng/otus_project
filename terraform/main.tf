@@ -12,7 +12,7 @@ resource "google_container_cluster" "primary" {
   name     = "k8s-1"
   zone     = "${var.zone}"
   remove_default_node_pool = true
-  initial_node_count = 1
+  initial_node_count = 2
   # legacy authorization
   // enable_legacy_abac = true
   # legacy Stackdriver Logging
