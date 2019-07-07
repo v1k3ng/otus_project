@@ -125,3 +125,6 @@ variables.json
 *.pyc
 
 build_info.txt
+
+#prometheus chart values.yaml
+charts/prometheus/values.yaml
