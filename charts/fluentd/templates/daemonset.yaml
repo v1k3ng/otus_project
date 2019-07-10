@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -15,6 +16,7 @@ rules:
   - ""
   resources:
   - pods
+  - namespaces
   verbs:
   - get
   - list
@@ -54,6 +56,8 @@ spec:
         release: {{ .Release.Name }}
         heritage: {{ .Release.Service }}
     spec:
+      serviceAccount: fluentd
+      serviceAccountName: fluentd
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
@@ -62,11 +66,13 @@ spec:
         image: fluent/fluentd-kubernetes-daemonset:elasticsearch
         env:
           - name:  FLUENT_ELASTICSEARCH_HOST
-            value: "elasticsearch-client"
+            value: "elasticsearch-client.logging.svc"
           - name:  FLUENT_ELASTICSEARCH_PORT
             value: "9200"
           - name: FLUENT_ELASTICSEARCH_SCHEME
             value: "http"
+          - name: FLUENT_UID
+            value: "0"
           # Option to configure elasticsearch plugin with self signed certs
           # ================================================================
           - name: FLUENT_ELASTICSEARCH_SSL_VERIFY

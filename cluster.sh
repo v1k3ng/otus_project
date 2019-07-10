@@ -175,12 +175,12 @@ create)
         get_cred_for_cluster
         deploy_helm
         deploy_namespaces
+        deploy_elasticsearch
+        deploy_fluentd
         deploy_rabbit_mongo
         deploy_base_app
         deploy_prometheus
         deploy_grafana
-        deploy_elasticsearch
-        deploy_fluentd
         deploy_kibana
         output_values
     else
@@ -198,12 +198,12 @@ recreate)
         get_cred_for_cluster
         deploy_helm
         deploy_namespaces
+        deploy_elasticsearch
+        deploy_fluentd
         deploy_rabbit_mongo
         deploy_base_app
         deploy_prometheus
         deploy_grafana
-        deploy_elasticsearch
-        deploy_fluentd
         deploy_kibana
         output_values
     else
