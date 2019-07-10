@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: mongodb-exporter
+  labels:
+    app: crawler
+    component: mongodb-exporter
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler
+      component: mongodb-exporter
+  template:
+    metadata:
+      name: mongodb-exporter
+      labels:
+        app: crawler
+        component: mongodb-exporter
+    spec:
+      containers:
+      - image: mad72/mongodb_exporter:latest
+        name: mongodb-exporter
+        env:
+        - name: MONGODB_URL
+          value: mongodb

@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: crawler-bot
+  labels:
+    app: crawler
+    component: bot
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler
+      component: bot
+  template:
+    metadata:
+      name: crawler-bot
+      labels:
+        app: crawler
+        component: bot
+    spec:
+      containers:
+      - image: mad72/crawler-bot:latest
+        name: bot
+        env:
+        - name: MONGO
+          value: mongodb
+        - name: MONGO_PORT
+          value: "27017"
+        - name: RMQ_HOST
+          value: rabbitmq
+        - name: RMQ_QUEUE
+          value: queue1
+        - name: RMQ_USERNAME
+          value: user
+        - name: RMQ_PASSWORD
+          value: password
+        - name: CHECK_INTERVAL
+          value: "60"
+        - name: EXCLUDE_URLS
+          value: .*github.com

@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: rabbitmq-exporter
+  labels:
+    app: crawler
+    component: rabbitmq-exporter
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler
+      component: rabbitmq-exporter
+  template:
+    metadata:
+      name: rabbitmq-exporter
+      labels:
+        app: crawler
+        component: rabbitmq-exporter
+    spec:
+      containers:
+      - image: kbudde/rabbitmq-exporter
+        name: rabbitmq-exporter
+        env:
+        - name: RABBIT_URL
+          value: http://rabbitmq:5672
+        - name: RABBIT_USER
+          value: user
+        - name: RABBIT_PASSWORD
+          value: password
+        - name: INCLUDE_QUEUES
+          value: queue1

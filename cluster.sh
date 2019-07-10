@@ -46,11 +46,12 @@ get_cred_for_cluster()
 
 deploy_namespaces()
 {
-    echo -e "\n${CYAN}Deploing PROD namespace${NONE}\n-----------------------"
+    echo -e "\n${CYAN}Deploing namespaces PROD, LOGGING, MONITORING${NONE}\n-----------------------"
     cd $SCRIPT_PATH
-    kubectl apply -f deploy_app/namespace-prod.yml --wait
-    kubectl apply -f k8s/namespace-monitoring.yml --wait
-    kubectl apply -f k8s/namespace-logging.yml --wait
+    kubectl apply -f deploy_app/namespace-prod.yml \
+                    -f k8s/namespace-monitoring.yml \
+                    -f k8s/namespace-logging.yml \
+                    --wait
 }
 
 deploy_rabbit_mongo()
@@ -66,6 +67,7 @@ deploy_rabbit_mongo()
         -f deploy_app/deployment-rabbitmq-exporter.yml \
         -f deploy_app/service-rabbitmq-exporter.yml \
         --wait
+        # helm upgrade --namespace prod mr mongodbrabbitmq -f mongodbrabbitmq/values.yaml --wait --install
 
 }
 
@@ -79,6 +81,7 @@ deploy_base_app()
         -f deploy_app/service-bot.yml \
         -f deploy_app/service-ui.yml \
         --wait
+        # helm upgrade --namespace prod crawlerengine crawlerengine/ -f crawlerengine/values.yaml --wait --install
 }
 
 deploy_helm()

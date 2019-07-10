@@ -30,11 +30,12 @@ script:
 - coverage run -m unittest discover -s tests/
 - coverage report --include crawler/crawler.py
 - cd ../
-- docker login -u $docker_user -p $docker_password
-- docker build -t $docker_user/crawler-bot:latest search_engine_crawler
-- docker build -t $docker_user/crawler-ui:latest search_engine_ui
-- docker push $docker_user/crawler-bot:latest
-- docker push $docker_user/crawler-ui:latest
+- bash createandpush.sh
+# - docker login -u $docker_user -p $docker_password
+# - docker build -t $docker_user/crawler-bot:$TAG search_engine_crawler
+# - docker build -t $docker_user/crawler-ui:$TAG search_engine_ui
+# - docker push $docker_user/crawler-bot:$TAG
+# - docker push $docker_user/crawler-ui:$TAG
 - cd ../
 - gcloud auth activate-service-account --key-file credentials-docker.json
 - gcloud container clusters get-credentials k8s-1 --zone=$gce_zone --project=$gce_project
