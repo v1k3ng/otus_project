@@ -12,7 +12,7 @@ resource "google_container_cluster" "primary" {
   name     = "k8s-1"
   zone     = "${var.zone}"
   remove_default_node_pool = true
-  initial_node_count = 2
+  initial_node_count = 1
   # legacy authorization
   // enable_legacy_abac = true
   # legacy Stackdriver Logging
@@ -31,7 +31,7 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   name       = "k8s-1-node"
   zone       = "${var.zone}"
   cluster    = "${google_container_cluster.primary.name}"
-  node_count = 1
+  node_count = 2
 
   node_config {
     preemptible  = true

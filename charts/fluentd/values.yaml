@@ -4,13 +4,14 @@
 image:
   repository: gcr.io/google-containers/fluentd-elasticsearch
   tag: v2.4.0
+  # tag: v3.0.1
   pullPolicy: IfNotPresent
   # pullSecrets:
   #   - secret1
   #   - secret2
 
 output:
-  host: elasticsearch-client.default.svc.cluster.local
+  host: elasticsearch-client
   port: 9200
   scheme: http
   sslVersion: TLSv1
@@ -112,6 +113,7 @@ configMaps:
       @id elasticsearch
       @type elasticsearch
       @log_level info
+      type_name _doc
       include_tag_key true
       # Replace with the host/port to your Elasticsearch cluster.
       host "#{ENV['OUTPUT_HOST']}"

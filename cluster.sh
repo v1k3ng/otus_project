@@ -140,6 +140,15 @@ deploy_elasticsearch()
         --install --wait 
 }
 
+deploy_kibana()
+{
+    echo -e "\n${CYAN}Deploing KIBANA${NONE}\n-------------"
+    cd $SCRIPT_PATH
+    helm upgrade --namespace logging kibana charts/kibana \
+        -f charts/kibana/values.yaml \
+        --install --wait 
+}
+
 output_values()
 {
     echo -e "\n${CYAN}Output values${NONE}\n-------------"
@@ -147,9 +156,13 @@ output_values()
     POD_GRAFANA=`kubectl get pods -n monitoring -l "app=grafana" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
     POD_PROMETHEUS=`kubectl get pods -n monitoring -l "app=prometheus,component=server" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
     POD_ALERTMANAGER=`kubectl get pods -n monitoring -l "app=prometheus,component=alertmanager" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
+    POD_ELASTICSEARCH=`kubectl get pods -n logging -l "app=elasticsearch,component=client,release=elasticsearch" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
+    POD_KIBANA=`kubectl get pods --namespace logging -l "app=kibana,release=kibana" -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'`
     echo -e "\n\nkubectl --namespace monitoring port-forward ${POD_GRAFANA} 3000"
     echo -e "kubectl --namespace monitoring port-forward ${POD_PROMETHEUS} 9090"
-    echo -e "kubectl --namespace monitoring port-forward ${POD_ALERTMANAGER} 9093\n\n"
+    echo -e "kubectl --namespace monitoring port-forward ${POD_ALERTMANAGER} 9093"
+    echo -e "kubectl --namespace logging port-forward ${POD_ELASTICSEARCH} 9200"
+    echo -e "kubectl --namespace logging port-forward ${POD_KIBANA} 5601\n\n"
 }
 
 
@@ -166,6 +179,9 @@ create)
         deploy_base_app
         deploy_prometheus
         deploy_grafana
+        deploy_elasticsearch
+        deploy_fluentd
+        deploy_kibana
         output_values
     else
         echo -e "\nVariables ${RED}SLACKAPIURL${NONE} and ${RED}SLACKCHANNEL${NONE} not found!\n"
@@ -186,6 +202,9 @@ recreate)
         deploy_base_app
         deploy_prometheus
         deploy_grafana
+        deploy_elasticsearch
+        deploy_fluentd
+        deploy_kibana
         output_values
     else
         echo -e "\nVariables ${RED}SLACKAPIURL${NONE} and ${RED}SLACKCHANNEL${NONE} not found!\n"
