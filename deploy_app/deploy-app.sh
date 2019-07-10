@@ -16,17 +16,17 @@ push)
     if [[ "$TRAVIS_BRANCH" == "master" ]]; then
         # kubectl apply - $PROD -f deployment-mongodb.yml -f deployment-rabbitmq.yml -f service-mongodb.yml -f service-rabbitmq.yml
         # sleep 30
-        kubectl delete -n $PROD deployments crawler-bot --wait
-        kubectl delete -n $PROD deployments crawler-ui --wait
+        kubectl delete -n $PROD deployments crawler-bot
+        kubectl delete -n $PROD deployments crawler-ui
         kubectl apply -n $PROD -f deployment-bot.yml \
                                 -f deployment-ui.yml \
                                 -f service-bot.yml \
                                 -f service-ui.yml \
-                                --wait
-        # sleep 60
+                                --wait=true
+        sleep 60
         kubectl get svc -n $PROD
     else
-        kubectl create namespace $TRAVIS_BRANCH --wait
+        kubectl create namespace $TRAVIS_BRANCH
         kubectl apply -n $TRAVIS_BRANCH -f deployment-mongodb.yml \
                                         -f deployment-rabbitmq.yml \
                                         -f service-mongodb.yml \
@@ -35,18 +35,18 @@ push)
                                         -f service-mongodb-exporter.yml \
                                         -f deployment-rabbitmq-exporter.yml \
                                         -f service-rabbitmq-exporter.yml \
-                                        --wait
+                                        --wait=true
         # sleep 30
-        kubectl delete -n $TRAVIS_BRANCH deployments crawler-bot --wait
+        kubectl delete -n $TRAVIS_BRANCH deployments crawler-bot
         kubectl delete -n $TRAVIS_BRANCH deployments crawler-ui
-        sed -i 's/crawler-bot:latest/crawler-bot:$TRAVIS_BRANCH/' deployment-bot.yml
-        sed -i 's/crawler-ui:latest/crawler-ui:$TRAVIS_BRANCH/' deployment-ui.yml
+        sed -i "s/crawler-bot:latest/crawler-bot:${TRAVIS_BRANCH}/" deployment-bot.yml
+        sed -i "s/crawler-ui:latest/crawler-ui:${TRAVIS_BRANCH}/" deployment-ui.yml
         kubectl apply -n $TRAVIS_BRANCH -f deployment-bot.yml \
                                         -f deployment-ui.yml \
                                         -f service-bot.yml \
                                         -f service-ui.yml \
-                                        --wait
-        # sleep 60
+                                        --wait=true
+        sleep 60
         kubectl get svc -n $TRAVIS_BRANCH
     fi
 ;;
@@ -57,7 +57,7 @@ pull_request)
     # kubectl apply -n $PROD -f deployment-bot.yml -f deployment-ui.yml -f service-bot.yml -f service-ui.yml
     # sleep 60
     # kubectl get svc -n $PROD
-    kubectl create namespace $TRAVIS_PULL_REQUEST_BRANCH --wait
+    kubectl create namespace $TRAVIS_PULL_REQUEST_BRANCH
     kubectl apply -n $TRAVIS_PULL_REQUEST_BRANCH -f deployment-mongodb.yml \
                                                 -f deployment-rabbitmq.yml \
                                                 -f service-mongodb.yml \
@@ -66,18 +66,18 @@ pull_request)
                                                 -f service-mongodb-exporter.yml \
                                                 -f deployment-rabbitmq-exporter.yml \
                                                 -f service-rabbitmq-exporter.yml \
-                                                --wait
+                                                --wait=true
     # sleep 30
-    kubectl delete -n $TRAVIS_PULL_REQUEST_BRANCH deployments crawler-bot --wait
-    kubectl delete -n $TRAVIS_PULL_REQUEST_BRANCH deployments crawler-ui --wait
-    sed -i 's/crawler-bot:latest/crawler-bot:$TRAVIS_PULL_REQUEST_BRANCH/' deployment-bot.yml
-    sed -i 's/crawler-ui:latest/crawler-ui:$TRAVIS_PULL_REQUEST_BRANCH/' deployment-ui.yml
+    kubectl delete -n $TRAVIS_PULL_REQUEST_BRANCH deployments crawler-bot
+    kubectl delete -n $TRAVIS_PULL_REQUEST_BRANCH deployments crawler-ui
+    sed -i "s/crawler-bot:latest/crawler-bot:${TRAVIS_PULL_REQUEST_BRANCH}/" deployment-bot.yml
+    sed -i "s/crawler-ui:latest/crawler-ui:${TRAVIS_PULL_REQUEST_BRANCH}/" deployment-ui.yml
     kubectl apply -n $TRAVIS_PULL_REQUEST_BRANCH -f deployment-bot.yml \
                                                 -f deployment-ui.yml \
                                                 -f service-bot.yml \
                                                 -f service-ui.yml \
-                                                --wait
-    # sleep 60
+                                                --wait=true
+    sleep 60
     kubectl get svc -n $TRAVIS_PULL_REQUEST_BRANCH
 ;;
 esac
