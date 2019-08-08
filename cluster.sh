@@ -11,6 +11,14 @@ SCRIPT_PATH=`dirname $0`
 cd $SCRIPT_PATH
 SCRIPT_PATH=$PWD
 
+# check the current branch
+BRANCH=`git branch | grep \* | cut -d ' ' -f2`
+if [[ "$BRANCH" != "master" ]]
+then
+    echo -e "\n${RED}Current branch is not master!${NONE}\n"
+    exit 1
+fi
+
 destroy_cluster()
 {
     echo -e "\n${CYAN}Destroing existing cluster${NONE}\n-------------------------"
