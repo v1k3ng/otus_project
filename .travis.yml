@@ -1,4 +1,4 @@
-dist: trusty
+dist: xenial
 sudo: required
 services:
 - docker
@@ -9,26 +9,33 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_52e387fa8e99_key -iv $encrypted_52e387fa8e99_iv
   -in credentials-docker.json.enc -out credentials-docker.json -d
 install:
+# install kubectl
 - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 - chmod +x ./kubectl
 - sudo mv ./kubectl /usr/local/bin/kubectl
+# install google-cloud-sdk
 - echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt
   cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 - curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring
   /usr/share/keyrings/cloud.google.gpg add -
-- sudo apt-get update && sudo apt-get install google-cloud-sdk
+- sudo apt-get update && sudo apt-get install --allow-unauthenticated --ignore-missing google-cloud-sdk
+# install requirements for crawler
 - cd docker/search_engine_crawler
 - pip3 install -r requirements.txt -r requirements-test.txt
+# install requirements for ui
 - cd ../search_engine_ui
 - pip3 install -r requirements.txt -r requirements-test.txt
 script:
+# test ui
 - python3 -m unittest discover -s tests/
 - coverage run -m unittest discover -s tests/
 - coverage report --include ui/ui.py
+# test crawler
 - cd ../search_engine_crawler
 - python3 -m unittest discover -s tests/
 - coverage run -m unittest discover -s tests/
 - coverage report --include crawler/crawler.py
+# create docker images and push they to docker hub
 - cd ../
 - bash createandpush.sh
 # - docker login -u $docker_user -p $docker_password
@@ -36,10 +43,11 @@ script:
 # - docker build -t $docker_user/crawler-ui:$TAG search_engine_ui
 # - docker push $docker_user/crawler-bot:$TAG
 # - docker push $docker_user/crawler-ui:$TAG
+# gcloud auth and config
 - cd ../
 - gcloud auth activate-service-account --key-file credentials-docker.json
 - gcloud container clusters get-credentials k8s-1 --zone=$gce_zone --project=$gce_project
-- kubectl config get-contexts
+# - kubectl config get-contexts
 # deploy app
 # - echo $TRAVIS_BRANCH
 # - echo $TRAVIS_EVENT_TYPE
