@@ -4,7 +4,7 @@
 ## Описание
 Для создания CI/CD системы было выдано простое микросервисное приложение:  
  - https://github.com/express42/search_engine_crawler
- - https://github.com/express42/search_engine_ui
+ - https://github.com/express42/search_engine_ui  
 На основании данного приложения был выстроен процесс развертывания инфраструктуры, процесс CI, процесс CD.
 ## Иструменты и технологии
 В проекте в той или иной мере используются:
