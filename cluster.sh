@@ -56,7 +56,7 @@ deploy_namespaces()
 {
     echo -e "\n${CYAN}Deploing namespaces PROD, LOGGING, MONITORING${NONE}\n-----------------------"
     cd $SCRIPT_PATH
-    kubectl apply -f deploy_app/namespace-prod.yml \
+    kubectl apply -f k8s/namespace-prod.yml \
                     -f k8s/namespace-monitoring.yml \
                     -f k8s/namespace-logging.yml \
                     --wait
@@ -105,11 +105,6 @@ deploy_prometheus()
 {
     echo -e "\n${CYAN}Deploing PROMETHEUS${NONE}\n-------------"
     cd $SCRIPT_PATH
-    # kubectl apply \
-    #     -f k8s/prometheus-rbac.yml \
-    #     -f k8s/prometheus-config-map.yml \
-    #     -f k8s/prometheus-deployment.yml \
-    #     -f k8s/prometheus-service.yml
     helm upgrade --namespace monitoring prometheus charts/prometheus \
             -f charts/prometheus/values.yaml \
             --set-string alertmanagerFiles."alertmanager\.yml".global.slack_api_url=${SLACKAPIURL} \
@@ -120,12 +115,6 @@ deploy_prometheus()
 deploy_grafana()
 {
     echo -e "\n${CYAN}Deploing GRAFANA${NONE}\n-------------"
-    # cd $SCRIPT_PATH
-    # kubectl apply \
-    #     -f k8s/grafana-deployment.yml \
-    #     -f k8s/grafana-daemonset-nodeexporter.yml \
-    #     -f k8s/grafana-deployment-state-metrics.yml \
-    #     -f k8s/grafana-rbac-state-metrics.yml 
     helm upgrade --namespace monitoring grafana charts/grafana/grafana \
         -f charts/grafana/grafana/values.yaml \
         --install \
