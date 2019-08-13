@@ -1,3 +1,12 @@
+2019-08-13 | Changed .travis.yml (HEAD -> master) [Demenev Maksim]
+2019-08-13 | Changed README.md (origin/master, origin/HEAD) [Demenev Maksim]
+2019-08-13 | Dir k8s clear [Demenev Maksim]
+2019-08-13 | Dir docker clear [Demenev Maksim]
+2019-08-13 | Dir charts clear [Demenev Maksim]
+2019-08-13 | Changed cluster.sh [Demenev Maksim]
+
+2019-08-08 | Added CHANGELOG.md [Demenev Maksim]
+
 2019-08-08 | Добавил сырой CHANGELOG.md
 
 2019-08-08 | Add comments in .travis,yml (HEAD -> master) [Demenev Maksim]
